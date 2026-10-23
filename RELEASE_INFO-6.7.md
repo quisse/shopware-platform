@@ -148,6 +148,12 @@ The profile page now shows company and VAT ID for business customers even when "
 Before, saving the profile without that setting removed the company and the VAT IDs of business customers.
 Themes that override `component_address_personal_company_section`, `component_address_personal_company` or `component_address_personal_vat_id` in `component/address/address-personal.html.twig` should check that the content also suits this case.
 
+### Enabling maintenance mode again no longer traps visitors in a redirect loop
+
+When maintenance mode was switched off, the redirect from the maintenance page into the shop was stored in the HTTP cache.
+Switching maintenance mode on again then sent every visitor not on the IP allowlist back and forth between the shop and that cached redirect (`ERR_TOO_MANY_REDIRECTS`) until the entry expired.
+The redirect is no longer cached. A shop that is already in this state gets out of it by running `bin/console cache:clear:http`.
+
 ## Hosting & Configuration
 
 ### Storefront readiness checks skip pages restricted by extensions
